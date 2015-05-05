@@ -172,6 +172,8 @@ public class ChestSorter
 		}
 		else if (tokens.length == 2 && this.configFile.presets.containsKey(tokens[1].toLowerCase()))
 		{
+			this.items.clear();
+			this.meta.clear();
 			String result = this.setItems(this.configFile.presets.get(tokens[1]), true);
 			LiteModItemSorter.logMessage("Now grabbing preset " + tokens[1] + " (" + result + ")", true);
 		}
