@@ -59,7 +59,6 @@ public class ConfigFile
 		while (scan.hasNext())
 		{
 			String line = scan.nextLine();
-//			System.out.println(line);
 			line = line.replaceAll(" ", "");
 			String[] parts = line.split("=");
 			if (parts.length != 2)

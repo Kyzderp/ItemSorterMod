@@ -101,7 +101,6 @@ public class LiteModItemSorter implements Tickable, ChatFilter, OutboundChatList
 	@Override
 	public boolean onChat(S02PacketChat chatPacket, IChatComponent chat,
 			String message) {
-		System.out.println(message);
 		if (message.matches(".*nknown.*ommand.*") && this.sentCmd)
 		{
 			this.sentCmd = false;
