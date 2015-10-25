@@ -14,24 +14,23 @@ import net.minecraft.util.IChatComponent;
 import org.lwjgl.input.Keyboard;
 
 import com.mumfrey.liteloader.ChatFilter;
+import com.mumfrey.liteloader.OutboundChatFilter;
 import com.mumfrey.liteloader.OutboundChatListener;
 import com.mumfrey.liteloader.Tickable;
 import com.mumfrey.liteloader.modconfig.ConfigStrategy;
 import com.mumfrey.liteloader.modconfig.ExposableOptions;
 
 /**
- * What more derps do you want?
- *
+ * ChestSorter
  * @author Kyzeragon
  */
 @ExposableOptions(strategy = ConfigStrategy.Versioned, filename="staffderpsmod.json")
-public class LiteModItemSorter implements Tickable, ChatFilter, OutboundChatListener
+public class LiteModItemSorter implements Tickable, OutboundChatFilter
 {
 	///// FIELDS /////
 	private ChestSorter chestSorter;
 	private ConfigFile configFile;
 
-	private boolean sentCmd;
 	private int grabCooldown;
 
 
@@ -42,12 +41,11 @@ public class LiteModItemSorter implements Tickable, ChatFilter, OutboundChatList
 	public String getName() { return "Item Sorter"; }
 
 	@Override
-	public String getVersion() { return "1.0.1"; }
+	public String getVersion() { return "1.1.0"; }
 
 	@Override
 	public void init(File configPath)
 	{
-		this.sentCmd = false;
 		this.configFile = new ConfigFile();
 		this.chestSorter = new ChestSorter(this.configFile);
 		this.grabCooldown = 5;
@@ -83,32 +81,16 @@ public class LiteModItemSorter implements Tickable, ChatFilter, OutboundChatList
 	}
 
 	@Override
-	public void onSendChatMessage(C01PacketChatMessage packet, String message)
+	public boolean onSendChatMessage(String message)
 	{
 		String[] tokens = message.trim().split(" ");
 		if (tokens[0].equalsIgnoreCase("/itemsorter") || tokens[0].equalsIgnoreCase("/grab"))
 		{
-			this.sentCmd = true;
 			this.chestSorter.handleCommand(message);
-		}
-	}
-
-
-	/**
-	 * Stops the Unknown command error from the server from displaying,
-	 * and also prevents displaying of lb entries that should be filtered out
-	 */
-	@Override
-	public boolean onChat(S02PacketChat chatPacket, IChatComponent chat,
-			String message) {
-		if (message.matches(".*nknown.*ommand.*") && this.sentCmd)
-		{
-			this.sentCmd = false;
 			return false;
 		}
 		return true;
 	}
-
 
 	/**
 	 * Logs the message to the user

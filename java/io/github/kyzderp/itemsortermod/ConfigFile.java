@@ -12,7 +12,7 @@ import com.mumfrey.liteloader.util.log.LiteLoaderLogger;
 
 public class ConfigFile 
 {
-	private final File path = new File(Minecraft.getMinecraft().mcDataDir, "liteconfig" + File.separator + "config.1.7.2" + File.separator + "ItemSorterPresets.txt");
+	private final File path = new File(Minecraft.getMinecraft().mcDataDir, "liteconfig" + File.separator + "config.1.8" + File.separator + "ItemSorterPresets.txt");
 
 	public HashMap<String, String> presets;
 	

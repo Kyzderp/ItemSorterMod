@@ -1,11 +1,10 @@
 package io.github.kyzderp.itemsortermod;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
@@ -30,7 +29,7 @@ public class ChestSorter
 		if (this.items.size() < 1)
 			return;
 		this.container = container;
-		EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+		EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 		List<Slot> slots = this.container.inventorySlots;
 		for (int i = 0; i < slots.size() - 36; i++)
 		{
@@ -63,7 +62,8 @@ public class ChestSorter
 		for (String item: parsedList)
 		{
 			String[] parts = item.split(":");
-			if (parts[0].matches("[0-9]+") && Item.itemRegistry.containsID(Integer.parseInt(parts[0])))
+			if (parts[0].matches("[0-9]+") 
+						&& Item.itemRegistry.getObjectById(Integer.parseInt(parts[0])) != null)
 				this.items.addFirst(Integer.parseInt(parts[0]));
 			else if (Item.itemRegistry.containsKey(parts[0]))
 				this.items.addFirst(Item.itemRegistry.getIDForObject(Item.itemRegistry.getObject(parts[0])));
