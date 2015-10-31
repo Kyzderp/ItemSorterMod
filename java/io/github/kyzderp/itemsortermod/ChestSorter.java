@@ -75,8 +75,8 @@ public class ChestSorter
 			if (parts[0].matches("[0-9]+") 
 					&& Item.itemRegistry.getObjectById(Integer.parseInt(parts[0])) != null)
 				this.items.addFirst(Integer.parseInt(parts[0]));
-			else if (Item.itemRegistry.containsKey(parts[0]))
-				this.items.addFirst(Item.itemRegistry.getIDForObject(Item.itemRegistry.getObject(parts[0])));
+			else if (Item.getByNameOrId(parts[0]) != null)
+				this.items.addFirst(Item.getIdFromItem(Item.getByNameOrId(parts[0])));
 			else
 			{
 				LiteModItemSorter.logError("No such item ID/name/preset as \"" + item + "\".");
