@@ -113,7 +113,7 @@ public class ChestSorter
 	 * Dump only things that are already in the container
 	 * @param container
 	 */
-	public void quickStackToContainer(Container container)
+	public void quickStackToContainer(Container container, boolean meta)
 	{
 		this.container = container;
 		List<Slot> slots = this.container.inventorySlots;
@@ -121,13 +121,16 @@ public class ChestSorter
 		{
 			if (!slots.get(i).getHasStack()) // Empty slot
 				continue;
-			Item lookFor = slots.get(i).getStack().getItem();
+			ItemStack lookFor = slots.get(i).getStack();
 			for (int j = slots.size() - 37; j >= 0; j--)
 			{
 				if (!slots.get(j).getHasStack()) // Empty
 					continue;
-				if (lookFor.equals(slots.get(j).getStack().getItem()))
+				if (lookFor.getItem().equals(slots.get(j).getStack().getItem()))
 				{ // Found it
+					if (meta && lookFor.getMetadata() != slots.get(j).getStack().getMetadata())
+						continue; // Additional check for metadata
+					
 					Minecraft.getMinecraft().playerController.windowClick(container.windowId, i, 0, 1, Minecraft.getMinecraft().thePlayer);
 					break;
 				}

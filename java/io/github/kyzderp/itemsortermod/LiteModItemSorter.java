@@ -78,7 +78,12 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 			}
 			else if (Keyboard.isKeyDown(Keyboard.KEY_Q) && this.grabCooldown == 5)
 			{
-				this.getChestSorter().quickStackToContainer(minecraft.thePlayer.openContainer);
+				this.getChestSorter().quickStackToContainer(minecraft.thePlayer.openContainer, false);
+				this.grabCooldown = 0;
+			}
+			else if (Keyboard.isKeyDown(Keyboard.KEY_W) && this.grabCooldown == 5)
+			{
+				this.getChestSorter().quickStackToContainer(minecraft.thePlayer.openContainer, true);
 				this.grabCooldown = 0;
 			}
 		}
