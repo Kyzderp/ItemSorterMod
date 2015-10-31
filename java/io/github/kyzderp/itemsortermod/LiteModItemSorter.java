@@ -28,8 +28,9 @@ import com.mumfrey.liteloader.modconfig.ExposableOptions;
 public class LiteModItemSorter implements Tickable, OutboundChatFilter
 {
 	///// FIELDS /////
-	private ChestSorter chestSorter;
-	private ConfigFile configFile;
+	private final ConfigFile configFile = new ConfigFile();
+	private final Commands commands = new Commands(this);
+	private final ChestSorter chestSorter = new ChestSorter(this);
 
 	private int grabCooldown;
 
@@ -41,13 +42,11 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 	public String getName() { return "Item Sorter"; }
 
 	@Override
-	public String getVersion() { return "1.1.0"; }
+	public String getVersion() { return "1.2.0"; }
 
 	@Override
 	public void init(File configPath)
 	{
-		this.configFile = new ConfigFile();
-		this.chestSorter = new ChestSorter(this.configFile);
 		this.grabCooldown = 5;
 	}
 
@@ -64,17 +63,22 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 				this.grabCooldown++;
 			if (Keyboard.isKeyDown(Keyboard.KEY_TAB) && this.grabCooldown == 5)
 			{
-				this.chestSorter.grab(minecraft.thePlayer.openContainer);
+				this.getChestSorter().grab(minecraft.thePlayer.openContainer);
 				this.grabCooldown = 0;
 			}
 			else if (Keyboard.isKeyDown(Keyboard.KEY_F1) && this.grabCooldown == 5)
 			{
-				this.chestSorter.dumpInventory(minecraft.thePlayer.openContainer);
+				this.getChestSorter().dumpInventory(minecraft.thePlayer.openContainer);
 				this.grabCooldown = 0;
 			}
 			else if (Keyboard.isKeyDown(Keyboard.KEY_F3) && this.grabCooldown == 5)
 			{
-				this.chestSorter.grabInventory(minecraft.thePlayer.openContainer);
+				this.getChestSorter().grabInventory(minecraft.thePlayer.openContainer);
+				this.grabCooldown = 0;
+			}
+			else if (Keyboard.isKeyDown(Keyboard.KEY_Q) && this.grabCooldown == 5)
+			{
+				this.getChestSorter().quickStackToContainer(minecraft.thePlayer.openContainer);
 				this.grabCooldown = 0;
 			}
 		}
@@ -86,7 +90,7 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 		String[] tokens = message.trim().split(" ");
 		if (tokens[0].equalsIgnoreCase("/itemsorter") || tokens[0].equalsIgnoreCase("/grab"))
 		{
-			this.chestSorter.handleCommand(message);
+			this.commands.handleCommand(message);
 			return false;
 		}
 		return true;
@@ -114,5 +118,19 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 		ChatComponentText displayMessage = new ChatComponentText("§8[§4!§8] §c" + message + " §8[§4!§8]");
 		displayMessage.setChatStyle((new ChatStyle()).setColor(EnumChatFormatting.RED));
 		Minecraft.getMinecraft().thePlayer.addChatComponentMessage(displayMessage);
+	}
+
+	/**
+	 * @return the chestSorter
+	 */
+	public ChestSorter getChestSorter() {
+		return chestSorter;
+	}
+
+	/**
+	 * @return the configFile
+	 */
+	public ConfigFile getConfigFile() {
+		return configFile;
 	}
 }

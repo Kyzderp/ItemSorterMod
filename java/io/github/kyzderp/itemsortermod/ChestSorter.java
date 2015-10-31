@@ -15,18 +15,22 @@ public class ChestSorter
 	private Container container;
 	private LinkedList<Integer> items;
 	private LinkedList<Integer> meta;
-	private ConfigFile configFile;
-	
-	public ChestSorter(ConfigFile configFile)
+	private LiteModItemSorter main;
+
+	public ChestSorter(LiteModItemSorter main)
 	{
-		this.configFile = configFile;
-		this.items = new LinkedList<Integer>();
-		this.meta = new LinkedList<Integer>();
+		this.main = main;
+		this.setItems(new LinkedList<Integer>());
+		this.setMeta(new LinkedList<Integer>());
 	}
 
+	/**
+	 * Grab specified items
+	 * @param container
+	 */
 	public void grab(Container container)
 	{
-		if (this.items.size() < 1)
+		if (this.getItems().size() < 1)
 			return;
 		this.container = container;
 		EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
@@ -38,10 +42,10 @@ public class ChestSorter
 				int currID = Item.getIdFromItem(slots.get(i).getStack().getItem());
 				int currMeta = slots.get(i).getStack().getItemDamage();
 				Item item = slots.get(i).getStack().getItem();
-				for (int j = 0; j < this.items.size(); j++)
+				for (int j = 0; j < this.getItems().size(); j++)
 				{
-					int id = this.items.get(j);
-					int findMeta = this.meta.get(j);
+					int id = this.getItems().get(j);
+					int findMeta = this.getMeta().get(j);
 					if (currID == id)
 					{
 						if (findMeta == -1 || findMeta == currMeta)
@@ -55,6 +59,12 @@ public class ChestSorter
 		}
 	}
 
+	/**
+	 * Set the items to grab
+	 * @param list
+	 * @param isPreset
+	 * @return
+	 */
 	public String setItems(String list, boolean isPreset)
 	{
 		String[] parsedList = list.split(",");
@@ -63,7 +73,7 @@ public class ChestSorter
 		{
 			String[] parts = item.split(":");
 			if (parts[0].matches("[0-9]+") 
-						&& Item.itemRegistry.getObjectById(Integer.parseInt(parts[0])) != null)
+					&& Item.itemRegistry.getObjectById(Integer.parseInt(parts[0])) != null)
 				this.items.addFirst(Integer.parseInt(parts[0]));
 			else if (Item.itemRegistry.containsKey(parts[0]))
 				this.items.addFirst(Item.itemRegistry.getIDForObject(Item.itemRegistry.getObject(parts[0])));
@@ -74,9 +84,9 @@ public class ChestSorter
 			}
 			///// metadata /////
 			if (parts.length > 1 && parts[1].matches("[0-9]+"))
-				this.meta.addFirst(Integer.parseInt(parts[1]));
+				this.getMeta().addFirst(Integer.parseInt(parts[1]));
 			else
-				this.meta.addFirst(-1);
+				this.getMeta().addFirst(-1);
 			result += " " + (new ItemStack(Item.getItemById(this.items.get(0)))).getDisplayName() + ",";
 		}
 		if (isPreset)
@@ -85,6 +95,10 @@ public class ChestSorter
 		return "";
 	}
 
+	/**
+	 * Dump everything into the container
+	 * @param container
+	 */
 	public void dumpInventory(Container container)
 	{
 		this.container = container;
@@ -94,7 +108,37 @@ public class ChestSorter
 			Minecraft.getMinecraft().playerController.windowClick(container.windowId, i, 0, 1, Minecraft.getMinecraft().thePlayer);
 		}
 	}
-	
+
+	/**
+	 * Dump only things that are already in the container
+	 * @param container
+	 */
+	public void quickStackToContainer(Container container)
+	{
+		this.container = container;
+		List<Slot> slots = this.container.inventorySlots;
+		for (int i = slots.size() - 36; i < slots.size(); i++)
+		{
+			if (!slots.get(i).getHasStack()) // Empty slot
+				continue;
+			Item lookFor = slots.get(i).getStack().getItem();
+			for (int j = slots.size() - 37; j >= 0; j--)
+			{
+				if (!slots.get(j).getHasStack()) // Empty
+					continue;
+				if (lookFor.equals(slots.get(j).getStack().getItem()))
+				{ // Found it
+					Minecraft.getMinecraft().playerController.windowClick(container.windowId, i, 0, 1, Minecraft.getMinecraft().thePlayer);
+					break;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Grab everything in the container
+	 * @param container
+	 */
 	public void grabInventory(Container container)
 	{
 		this.container = container;
@@ -104,99 +148,34 @@ public class ChestSorter
 			Minecraft.getMinecraft().playerController.windowClick(container.windowId, i, 0, 1, Minecraft.getMinecraft().thePlayer);
 		}
 	}
-	
-	public void handleCommand(String message)
-	{
-		String[] tokens = message.split(" ");
-		if (tokens.length < 2)
-		{
-			if (this.items.size() < 1)
-			{
-				LiteModItemSorter.logError("No items specified yet. Usage: /grab <item[,item2]>");
-				return;
-			}
-			String result = "Currently grabbing:";
-			for (Integer id: this.items)
-				result += " " + (new ItemStack(Item.getItemById(id))).getDisplayName() + ",";
-			LiteModItemSorter.logMessage(result.substring(0, result.length() - 1) + ".", true);
-		}
-		else if (tokens.length == 2 && tokens[1].equalsIgnoreCase("help"))
-		{
-			LiteModItemSorter.logMessage("commands (alias /itemsorter) and keys:", true);
-			String[] commands = {"/grab <item[,item2]> - Specify list of items to grab",
-					"/grab held - Grab currently held item regardless of metadata",
-					"/grab meta - Grab currently held item with specific metadata",
-					"/grab presets - Show the list of available presets",
-					"/grab <preset> - Specify preset to grab",
-					"/grab clear - Clear the list of items to grab",
-					"/grab reload - Reloads .minecraft/liteconfig/config.1.7.2/ItemSorterPresets.txt",
-					"<TAB> - Grabs specified items when container opened",
-					"<F1> - Dumps all inventory items into open container",
-					"<F3> - Grabs all of open container's items"};
-			for (String command: commands)
-				LiteModItemSorter.logMessage(command, false);
-		}
-		else if (tokens.length == 2 && tokens[1].equalsIgnoreCase("reload"))
-		{
-			this.configFile.loadFile();
-			LiteModItemSorter.logMessage("ItemSorter presets reloaded.", true);
-		}
-		else if (tokens.length == 2 && tokens[1].equalsIgnoreCase("clear"))
-		{
-			this.items.clear();
-			this.meta.clear();
-			LiteModItemSorter.logMessage("Cleared list of items to grab", true);
-		}
-		else if (tokens.length == 2 && tokens[1].matches("(held|meta)"))
-		{
-			if (Minecraft.getMinecraft().thePlayer.getHeldItem() == null
-					|| Minecraft.getMinecraft().thePlayer.getHeldItem().getItem() == null)
-			{
-				LiteModItemSorter.logError("Stahp trying to grab air");
-				return;
-			}
-			ItemStack heldItem = Minecraft.getMinecraft().thePlayer.getHeldItem();
-			this.items.clear();
-			this.meta.clear();
-			this.items.addFirst(Item.getIdFromItem(heldItem.getItem()));
-			if (tokens[1].equalsIgnoreCase("held"))
-			{
-				this.meta.addFirst(-1);
-				LiteModItemSorter.logMessage("Grabbing " + heldItem.getDisplayName() + " with all metadata.", true);
-			}
-			else
-			{
-				this.meta.addFirst(heldItem.getItemDamage());
-				LiteModItemSorter.logMessage("Grabbing " + heldItem.getDisplayName() + " with specific metadata.", true);
-			}
-		}
-		else if (tokens.length == 2 && this.configFile.presets.containsKey(tokens[1].toLowerCase()))
-		{
-			this.items.clear();
-			this.meta.clear();
-			String result = this.setItems(this.configFile.presets.get(tokens[1]), true);
-			LiteModItemSorter.logMessage("Now grabbing preset " + tokens[1] + " (" + result + ")", true);
-		}
-		else if (tokens.length == 2 && tokens[1].matches("presets?"))
-		{
-			String result = "Available presets:";
-			for (String preset: this.configFile.presets.keySet())
-				result += " " + preset + ",";
-			LiteModItemSorter.logMessage(result.substring(0, result.length() - 1) + ".", true);
-		}
-		else if (tokens.length == 2)
-		{
-			this.items.clear();
-			this.meta.clear();
-			this.setItems(tokens[1], false);
-		}
-		else
-		{
-			LiteModItemSorter.logError("Invalid parameters! Usage: /grab <item[,item2]>");
-			String result = "Available presets:";
-			for (String preset: this.configFile.presets.keySet())
-				result += " " + preset + ",";
-			LiteModItemSorter.logMessage(result.substring(0, result.length() - 1) + ".", true);
-		}
+
+	/**
+	 * @return the items
+	 */
+	public LinkedList<Integer> getItems() {
+		return items;
 	}
+
+	/**
+	 * @param items the items to set
+	 */
+	public void setItems(LinkedList<Integer> items) {
+		this.items = items;
+	}
+
+	/**
+	 * @return the meta
+	 */
+	public LinkedList<Integer> getMeta() {
+		return meta;
+	}
+
+	/**
+	 * @param meta the meta to set
+	 */
+	public void setMeta(LinkedList<Integer> meta) {
+		this.meta = meta;
+	}
+
+
 }
