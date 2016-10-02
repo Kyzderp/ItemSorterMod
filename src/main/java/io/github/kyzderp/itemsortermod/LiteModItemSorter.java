@@ -3,19 +3,13 @@ package io.github.kyzderp.itemsortermod;
 import java.io.File;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.network.play.client.C01PacketChatMessage;
-import net.minecraft.network.play.server.S02PacketChat;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 
 import org.lwjgl.input.Keyboard;
 
-import com.mumfrey.liteloader.ChatFilter;
 import com.mumfrey.liteloader.OutboundChatFilter;
-import com.mumfrey.liteloader.OutboundChatListener;
 import com.mumfrey.liteloader.Tickable;
 import com.mumfrey.liteloader.modconfig.ConfigStrategy;
 import com.mumfrey.liteloader.modconfig.ExposableOptions;
@@ -24,13 +18,13 @@ import com.mumfrey.liteloader.modconfig.ExposableOptions;
  * ChestSorter
  * @author Kyzeragon
  */
-@ExposableOptions(strategy = ConfigStrategy.Versioned, filename="staffderpsmod.json")
+@ExposableOptions(strategy = ConfigStrategy.Versioned, filename="itemsortermod.json")
 public class LiteModItemSorter implements Tickable, OutboundChatFilter
 {
 	///// FIELDS /////
 	private final ConfigFile configFile = new ConfigFile();
 	private final Commands commands = new Commands(this);
-	private final ChestSorter chestSorter = new ChestSorter(this);
+	private final ChestSorter chestSorter = new ChestSorter();
 
 	private int grabCooldown;
 
@@ -42,7 +36,7 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 	public String getName() { return "Item Sorter"; }
 
 	@Override
-	public String getVersion() { return "1.2.0"; }
+	public String getVersion() { return "1.3.0"; }
 
 	@Override
 	public void init(File configPath)
@@ -108,9 +102,9 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 	public static void logMessage(String message, boolean addPrefix)
 	{
 		if (addPrefix)
-			message = "§8[§2ItemSorter§8] §a" + message;
-		ChatComponentText displayMessage = new ChatComponentText(message);
-		displayMessage.setChatStyle((new ChatStyle()).setColor(EnumChatFormatting.GREEN));
+			message = "\u00A78[\u00A72ItemSorter\u00A78] \u00A7a" + message;
+		TextComponentString displayMessage = new TextComponentString(message);
+		displayMessage.setStyle((new Style()).setColor(TextFormatting.GREEN));
 		Minecraft.getMinecraft().thePlayer.addChatComponentMessage(displayMessage);
 	}
 
@@ -120,8 +114,8 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 	 */
 	public static void logError(String message)
 	{
-		ChatComponentText displayMessage = new ChatComponentText("§8[§4!§8] §c" + message + " §8[§4!§8]");
-		displayMessage.setChatStyle((new ChatStyle()).setColor(EnumChatFormatting.RED));
+		TextComponentString displayMessage = new TextComponentString("\u00A78[\u00A74!\u00A78] \u00A7c" + message + " \u00A78[\u00A74!\u00A78]");
+		displayMessage.setStyle((new Style()).setColor(TextFormatting.RED));
 		Minecraft.getMinecraft().thePlayer.addChatComponentMessage(displayMessage);
 	}
 

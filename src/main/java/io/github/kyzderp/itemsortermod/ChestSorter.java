@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
@@ -15,11 +16,9 @@ public class ChestSorter
 	private Container container;
 	private LinkedList<Integer> items;
 	private LinkedList<Integer> meta;
-	private LiteModItemSorter main;
 
-	public ChestSorter(LiteModItemSorter main)
+	public ChestSorter()
 	{
-		this.main = main;
 		this.setItems(new LinkedList<Integer>());
 		this.setMeta(new LinkedList<Integer>());
 	}
@@ -41,7 +40,6 @@ public class ChestSorter
 			{
 				int currID = Item.getIdFromItem(slots.get(i).getStack().getItem());
 				int currMeta = slots.get(i).getStack().getItemDamage();
-				Item item = slots.get(i).getStack().getItem();
 				for (int j = 0; j < this.getItems().size(); j++)
 				{
 					int id = this.getItems().get(j);
@@ -50,7 +48,7 @@ public class ChestSorter
 					{
 						if (findMeta == -1 || findMeta == currMeta)
 						{
-							Minecraft.getMinecraft().playerController.windowClick(container.windowId, i, 0, 1, player);
+							Minecraft.getMinecraft().playerController.windowClick(container.windowId, i, 0, ClickType.QUICK_MOVE, player);
 							break;
 						}
 					}
@@ -73,7 +71,7 @@ public class ChestSorter
 		{
 			String[] parts = item.split(":");
 			if (parts[0].matches("[0-9]+") 
-					&& Item.itemRegistry.getObjectById(Integer.parseInt(parts[0])) != null)
+					&& Item.REGISTRY.getObjectById(Integer.parseInt(parts[0])) != null)
 				this.items.addFirst(Integer.parseInt(parts[0]));
 			else if (Item.getByNameOrId(parts[0]) != null)
 				this.items.addFirst(Item.getIdFromItem(Item.getByNameOrId(parts[0])));
@@ -105,7 +103,7 @@ public class ChestSorter
 		List<Slot> slots = this.container.inventorySlots;
 		for (int i = slots.size() - 36; i < slots.size(); i++)
 		{
-			Minecraft.getMinecraft().playerController.windowClick(container.windowId, i, 0, 1, Minecraft.getMinecraft().thePlayer);
+			Minecraft.getMinecraft().playerController.windowClick(container.windowId, i, 0, ClickType.QUICK_MOVE, Minecraft.getMinecraft().thePlayer);
 		}
 	}
 
@@ -131,7 +129,7 @@ public class ChestSorter
 					if (meta && lookFor.getMetadata() != slots.get(j).getStack().getMetadata())
 						continue; // Additional check for metadata
 					
-					Minecraft.getMinecraft().playerController.windowClick(container.windowId, i, 0, 1, Minecraft.getMinecraft().thePlayer);
+					Minecraft.getMinecraft().playerController.windowClick(container.windowId, i, 0, ClickType.QUICK_MOVE, Minecraft.getMinecraft().thePlayer);
 					break;
 				}
 			}
@@ -148,7 +146,7 @@ public class ChestSorter
 		List<Slot> slots = this.container.inventorySlots;
 		for (int i = 0; i < slots.size() - 36; i++)
 		{
-			Minecraft.getMinecraft().playerController.windowClick(container.windowId, i, 0, 1, Minecraft.getMinecraft().thePlayer);
+			Minecraft.getMinecraft().playerController.windowClick(container.windowId, i, 0, ClickType.QUICK_MOVE, Minecraft.getMinecraft().thePlayer);
 		}
 	}
 

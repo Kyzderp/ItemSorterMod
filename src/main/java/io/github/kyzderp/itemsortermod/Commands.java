@@ -61,13 +61,13 @@ public class Commands
 		}
 		else if (tokens.length == 2 && tokens[1].matches("(held|meta)"))
 		{
-			if (Minecraft.getMinecraft().thePlayer.getHeldItem() == null
-					|| Minecraft.getMinecraft().thePlayer.getHeldItem().getItem() == null)
+			if (Minecraft.getMinecraft().thePlayer.getHeldItemMainhand() == null
+					|| Minecraft.getMinecraft().thePlayer.getHeldItemMainhand().getItem() == null)
 			{
 				LiteModItemSorter.logError("Stahp trying to grab air");
 				return;
 			}
-			ItemStack heldItem = Minecraft.getMinecraft().thePlayer.getHeldItem();
+			ItemStack heldItem = Minecraft.getMinecraft().thePlayer.getHeldItemMainhand();
 			this.main.getChestSorter().getItems().clear();
 			this.main.getChestSorter().getMeta().clear();
 			this.main.getChestSorter().getItems().addFirst(Item.getIdFromItem(heldItem.getItem()));

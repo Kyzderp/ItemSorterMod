@@ -1,7 +1,0 @@
-{
-    "name": "${ant.project.name}",
-    "mcversion": "${litemodversion}",
-    "revision": "${build.number}",
-    "author": "${author}",
-    "description": "A mod for manipulating inventory more easily"
-}
