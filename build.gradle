@@ -22,7 +22,7 @@ buildscript {
 
 apply plugin: 'net.minecraftforge.gradle.liteloader'
 
-version = "1.3.0"
+version = "1.5.0"
 group = "io.github.kyzderp.itemsortermod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "itemsorter"
 
