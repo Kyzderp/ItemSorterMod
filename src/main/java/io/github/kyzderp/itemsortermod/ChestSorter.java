@@ -97,13 +97,27 @@ public class ChestSorter
 	 * Dump everything into the container
 	 * @param container
 	 */
-	public void dumpInventory(Container container)
+	public void dumpInventory(Container container, boolean hotbar, boolean inventory)
 	{
 		this.container = container;
 		List<Slot> slots = this.container.inventorySlots;
-		for (int i = slots.size() - 36; i < slots.size(); i++)
+
+		if (inventory)
 		{
-			Minecraft.getMinecraft().playerController.windowClick(container.windowId, i, 0, ClickType.QUICK_MOVE, Minecraft.getMinecraft().thePlayer);
+			for (int i = slots.size() - 36; i < slots.size() - 9; i++)
+			{
+				Minecraft.getMinecraft().playerController.windowClick(container.windowId, 
+						i, 0, ClickType.QUICK_MOVE, Minecraft.getMinecraft().thePlayer);
+			}
+		}
+
+		if (hotbar)
+		{
+			for (int i = slots.size() - 9; i < slots.size(); i++)
+			{
+				Minecraft.getMinecraft().playerController.windowClick(container.windowId, 
+						i, 0, ClickType.QUICK_MOVE, Minecraft.getMinecraft().thePlayer);
+			}
 		}
 	}
 
@@ -111,11 +125,18 @@ public class ChestSorter
 	 * Dump only things that are already in the container
 	 * @param container
 	 */
-	public void quickStackToContainer(Container container, boolean meta)
+	public void quickStackToContainer(Container container, boolean meta, boolean hotbar, boolean inventory)
 	{
 		this.container = container;
 		List<Slot> slots = this.container.inventorySlots;
-		for (int i = slots.size() - 36; i < slots.size(); i++)
+		// Loop through player inventory portion
+		int start = slots.size() - 36;
+		if (!inventory)
+			start += 27;
+		int end = slots.size();
+		if (!hotbar)
+			end -= 9;
+		for (int i = start; i < end; i++)
 		{
 			if (!slots.get(i).getHasStack()) // Empty slot
 				continue;
@@ -128,8 +149,9 @@ public class ChestSorter
 				{ // Found it
 					if (meta && lookFor.getMetadata() != slots.get(j).getStack().getMetadata())
 						continue; // Additional check for metadata
-					
-					Minecraft.getMinecraft().playerController.windowClick(container.windowId, i, 0, ClickType.QUICK_MOVE, Minecraft.getMinecraft().thePlayer);
+
+					Minecraft.getMinecraft().playerController.windowClick(container.windowId, 
+							i, 0, ClickType.QUICK_MOVE, Minecraft.getMinecraft().thePlayer);
 					break;
 				}
 			}

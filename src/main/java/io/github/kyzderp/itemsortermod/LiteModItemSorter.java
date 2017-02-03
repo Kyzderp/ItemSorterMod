@@ -62,7 +62,12 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 			}
 			else if (Keyboard.isKeyDown(Keyboard.KEY_F1) && this.grabCooldown == 5)
 			{
-				this.getChestSorter().dumpInventory(minecraft.thePlayer.openContainer);
+				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) // inventory only
+					this.getChestSorter().dumpInventory(minecraft.thePlayer.openContainer, false, true);
+				else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) // hotbar only
+					this.getChestSorter().dumpInventory(minecraft.thePlayer.openContainer, true, false);
+				else // all
+					this.getChestSorter().dumpInventory(minecraft.thePlayer.openContainer, true, true);
 				this.grabCooldown = 0;
 			}
 			else if (Keyboard.isKeyDown(Keyboard.KEY_F3) && this.grabCooldown == 5)
@@ -70,14 +75,30 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 				this.getChestSorter().grabInventory(minecraft.thePlayer.openContainer);
 				this.grabCooldown = 0;
 			}
-			else if (Keyboard.isKeyDown(Keyboard.KEY_Q) && this.grabCooldown == 5)
+			else if (minecraft.gameSettings.keyBindForward.isKeyDown() && this.grabCooldown == 5)
 			{
-				this.getChestSorter().quickStackToContainer(minecraft.thePlayer.openContainer, false);
+				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) // inventory only
+					this.getChestSorter().quickStackToContainer(minecraft.thePlayer.openContainer, 
+							true, false, true);
+				else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) // hotbar only
+					this.getChestSorter().quickStackToContainer(minecraft.thePlayer.openContainer, 
+							true, true, false);
+				else // all
+					this.getChestSorter().quickStackToContainer(minecraft.thePlayer.openContainer, 
+							true, true, true);
 				this.grabCooldown = 0;
 			}
-			else if (Keyboard.isKeyDown(Keyboard.KEY_W) && this.grabCooldown == 5)
+			else if (minecraft.gameSettings.keyBindLeft.isKeyDown() && this.grabCooldown == 5)
 			{
-				this.getChestSorter().quickStackToContainer(minecraft.thePlayer.openContainer, true);
+				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) // inventory only
+					this.getChestSorter().quickStackToContainer(minecraft.thePlayer.openContainer, 
+							false, false, true);
+				else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) // hotbar only
+					this.getChestSorter().quickStackToContainer(minecraft.thePlayer.openContainer, 
+							false, true, false);
+				else // all
+					this.getChestSorter().quickStackToContainer(minecraft.thePlayer.openContainer, 
+							false, true, true);
 				this.grabCooldown = 0;
 			}
 		}

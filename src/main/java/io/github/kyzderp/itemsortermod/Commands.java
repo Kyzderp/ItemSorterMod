@@ -12,7 +12,7 @@ public class Commands
 	{
 		this.main = main;		
 	}
-	
+
 	/**
 	 * TODO: refactor
 	 * @param message
@@ -43,8 +43,17 @@ public class Commands
 					"/grab clear - Clear the list of items to grab",
 					"/grab reload - Reloads .minecraft/liteconfig/config.1.7.2/ItemSorterPresets.txt",
 					"<TAB> - Grabs specified items when container opened",
-					"<F1> - Dumps all inventory items into open container",
-					"<F3> - Grabs all of open container's items"};
+					"<F1> - Dumps all inventory + hotbar items into open container",
+					"<LSHIFT> + <F1> - Dumps all inventory items into open container",
+					"<LCTRL> + <F1> - Dumps all hotbar items into open container",
+					"<F3> - Grabs all of open container's items",
+					"<FORWARD> - Quickstacks inventory + hotbar, with metadata",
+					"<LSHIFT> + <FORWARD> - Quickstacks inventory only, with metadata",
+					"<LCTRL> + <FORWARD> - Quickstacks hotbar only, with metadata",
+					"<LEFT> - Quickstacks inventory + hotbar, regardless of metadata",
+					"<LSHIFT> + <LEFT> - Quickstacks inventory only, regardless of metadata",
+					"<LCTRL> + <LEFT> - Quickstacks hotbar only, regardless of metadata"
+			};
 			for (String command: commands)
 				LiteModItemSorter.logMessage(command, false);
 		}
