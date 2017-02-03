@@ -50,42 +50,42 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 	@Override
 	public void onTick(Minecraft minecraft, float partialTicks, boolean inGame, boolean clock)
 	{
-		if (inGame && minecraft.thePlayer.openContainer != null
-				&& !minecraft.thePlayer.openContainer.equals(minecraft.thePlayer.inventoryContainer))
+		if (inGame && minecraft.player.openContainer != null
+				&& !minecraft.player.openContainer.equals(minecraft.player.inventoryContainer))
 		{
 			if (this.grabCooldown < 5)
 				this.grabCooldown++;
 			if (Keyboard.isKeyDown(Keyboard.KEY_TAB) && this.grabCooldown == 5)
 			{
-				this.getChestSorter().grab(minecraft.thePlayer.openContainer);
+				this.getChestSorter().grab(minecraft.player.openContainer);
 				this.grabCooldown = 0;
 			}
 			else if (Keyboard.isKeyDown(Keyboard.KEY_F1) && this.grabCooldown == 5)
 			{
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) // inventory only
-					this.getChestSorter().dumpInventory(minecraft.thePlayer.openContainer, false, true);
+					this.getChestSorter().dumpInventory(minecraft.player.openContainer, false, true);
 				else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) // hotbar only
-					this.getChestSorter().dumpInventory(minecraft.thePlayer.openContainer, true, false);
+					this.getChestSorter().dumpInventory(minecraft.player.openContainer, true, false);
 				else // all
-					this.getChestSorter().dumpInventory(minecraft.thePlayer.openContainer, true, true);
+					this.getChestSorter().dumpInventory(minecraft.player.openContainer, true, true);
 				this.grabCooldown = 0;
 			}
 			else if (Keyboard.isKeyDown(Keyboard.KEY_F3) && this.grabCooldown == 5)
 			{
-				this.getChestSorter().grabInventory(minecraft.thePlayer.openContainer);
+				this.getChestSorter().grabInventory(minecraft.player.openContainer);
 				this.grabCooldown = 0;
 			}
 			else if (Keyboard.isKeyDown(minecraft.gameSettings.keyBindForward.getKeyCode()) 
 					&& this.grabCooldown == 5)
 			{
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) // inventory only
-					this.getChestSorter().quickStackToContainer(minecraft.thePlayer.openContainer, 
+					this.getChestSorter().quickStackToContainer(minecraft.player.openContainer, 
 							true, false, true);
 				else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) // hotbar only
-					this.getChestSorter().quickStackToContainer(minecraft.thePlayer.openContainer, 
+					this.getChestSorter().quickStackToContainer(minecraft.player.openContainer, 
 							true, true, false);
 				else // all
-					this.getChestSorter().quickStackToContainer(minecraft.thePlayer.openContainer, 
+					this.getChestSorter().quickStackToContainer(minecraft.player.openContainer, 
 							true, true, true);
 				this.grabCooldown = 0;
 			}
@@ -93,13 +93,13 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 					&& this.grabCooldown == 5)
 			{
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) // inventory only
-					this.getChestSorter().quickStackToContainer(minecraft.thePlayer.openContainer, 
+					this.getChestSorter().quickStackToContainer(minecraft.player.openContainer, 
 							false, false, true);
 				else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) // hotbar only
-					this.getChestSorter().quickStackToContainer(minecraft.thePlayer.openContainer, 
+					this.getChestSorter().quickStackToContainer(minecraft.player.openContainer, 
 							false, true, false);
 				else // all
-					this.getChestSorter().quickStackToContainer(minecraft.thePlayer.openContainer, 
+					this.getChestSorter().quickStackToContainer(minecraft.player.openContainer, 
 							false, true, true);
 				this.grabCooldown = 0;
 			}
@@ -128,7 +128,7 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 			message = "\u00A78[\u00A72ItemSorter\u00A78] \u00A7a" + message;
 		TextComponentString displayMessage = new TextComponentString(message);
 		displayMessage.setStyle((new Style()).setColor(TextFormatting.GREEN));
-		Minecraft.getMinecraft().thePlayer.addChatComponentMessage(displayMessage);
+		Minecraft.getMinecraft().player.sendMessage(displayMessage);
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 	{
 		TextComponentString displayMessage = new TextComponentString("\u00A78[\u00A74!\u00A78] \u00A7c" + message + " \u00A78[\u00A74!\u00A78]");
 		displayMessage.setStyle((new Style()).setColor(TextFormatting.RED));
-		Minecraft.getMinecraft().thePlayer.addChatComponentMessage(displayMessage);
+		Minecraft.getMinecraft().player.sendMessage(displayMessage);
 	}
 
 	/**
