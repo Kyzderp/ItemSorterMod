@@ -36,7 +36,7 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 	public String getName() { return "Item Sorter"; }
 
 	@Override
-	public String getVersion() { return "1.3.0"; }
+	public String getVersion() { return "1.6.0"; }
 
 	@Override
 	public void init(File configPath)
@@ -137,7 +137,8 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 	 */
 	public static void logError(String message)
 	{
-		TextComponentString displayMessage = new TextComponentString("\u00A78[\u00A74!\u00A78] \u00A7c" + message + " \u00A78[\u00A74!\u00A78]");
+		TextComponentString displayMessage = new TextComponentString("\u00A78[\u00A74!\u00A78] \u00A7c" 
+				+ message + " \u00A78[\u00A74!\u00A78]");
 		displayMessage.setStyle((new Style()).setColor(TextFormatting.RED));
 		Minecraft.getMinecraft().player.sendMessage(displayMessage);
 	}

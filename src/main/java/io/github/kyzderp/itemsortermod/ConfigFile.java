@@ -12,14 +12,15 @@ import com.mumfrey.liteloader.util.log.LiteLoaderLogger;
 
 public class ConfigFile 
 {
-	private final File path = new File(Minecraft.getMinecraft().mcDataDir, "liteconfig" + File.separator + "config.1.10.2" + File.separator + "ItemSorterPresets.txt");
+	private final File path = new File(Minecraft.getMinecraft().mcDataDir, "liteconfig" 
+			+ File.separator + "common" + File.separator + "ItemSorterPresets.txt");
 
 	public HashMap<String, String> presets;
-	
+
 	public ConfigFile()
 	{
 		this.presets = new HashMap<String, String>();
-		
+
 		if (!path.exists())
 		{
 			if (!this.writeFile())
@@ -32,7 +33,7 @@ public class ConfigFile
 		else
 			LiteLoaderLogger.info("ItemSorter presets loaded.");
 	}
-	
+
 	public boolean writeFile()
 	{
 		PrintWriter writer;
@@ -91,5 +92,5 @@ public class ConfigFile
 		scan.close();
 		return true;
 	}
-	
+
 }
