@@ -75,7 +75,8 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 				this.getChestSorter().grabInventory(minecraft.thePlayer.openContainer);
 				this.grabCooldown = 0;
 			}
-			else if (minecraft.gameSettings.keyBindForward.isKeyDown() && this.grabCooldown == 5)
+			else if (Keyboard.isKeyDown(minecraft.gameSettings.keyBindForward.getKeyCode()) 
+					&& this.grabCooldown == 5)
 			{
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) // inventory only
 					this.getChestSorter().quickStackToContainer(minecraft.thePlayer.openContainer, 
@@ -88,7 +89,8 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 							true, true, true);
 				this.grabCooldown = 0;
 			}
-			else if (minecraft.gameSettings.keyBindLeft.isKeyDown() && this.grabCooldown == 5)
+			else if (Keyboard.isKeyDown(minecraft.gameSettings.keyBindLeft.getKeyCode()) 
+					&& this.grabCooldown == 5)
 			{
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) // inventory only
 					this.getChestSorter().quickStackToContainer(minecraft.thePlayer.openContainer, 
