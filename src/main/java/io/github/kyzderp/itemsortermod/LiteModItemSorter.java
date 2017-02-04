@@ -36,7 +36,7 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 	public String getName() { return "Item Sorter"; }
 
 	@Override
-	public String getVersion() { return "1.5.1"; }
+	public String getVersion() { return "1.5.2"; }
 
 	@Override
 	public void init(File configPath)
