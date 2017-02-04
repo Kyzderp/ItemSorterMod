@@ -36,7 +36,7 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 	public String getName() { return "Item Sorter"; }
 
 	@Override
-	public String getVersion() { return "1.6.0"; }
+	public String getVersion() { return "1.6.1"; }
 
 	@Override
 	public void init(File configPath)
@@ -60,7 +60,9 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 				this.getChestSorter().grab(minecraft.player.openContainer);
 				this.grabCooldown = 0;
 			}
-			else if (Keyboard.isKeyDown(Keyboard.KEY_F1) && this.grabCooldown == 5)
+			// Walk Backwards -- dump
+			else if (Keyboard.isKeyDown(minecraft.gameSettings.keyBindBack.getKeyCode()) 
+					&& this.grabCooldown == 5)
 			{
 				if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) // inventory only
 					this.getChestSorter().dumpInventory(minecraft.player.openContainer, false, true);
@@ -70,11 +72,14 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 					this.getChestSorter().dumpInventory(minecraft.player.openContainer, true, true);
 				this.grabCooldown = 0;
 			}
-			else if (Keyboard.isKeyDown(Keyboard.KEY_F3) && this.grabCooldown == 5)
+			// Strafe Right -- grab all
+			else if (Keyboard.isKeyDown(minecraft.gameSettings.keyBindRight.getKeyCode()) 
+					&& this.grabCooldown == 5)
 			{
 				this.getChestSorter().grabInventory(minecraft.player.openContainer);
 				this.grabCooldown = 0;
 			}
+			// Walk Forwards -- quickstack with meta
 			else if (Keyboard.isKeyDown(minecraft.gameSettings.keyBindForward.getKeyCode()) 
 					&& this.grabCooldown == 5)
 			{
@@ -89,6 +94,7 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 							true, true, true);
 				this.grabCooldown = 0;
 			}
+			// Strafe Left -- quickstack without meta
 			else if (Keyboard.isKeyDown(minecraft.gameSettings.keyBindLeft.getKeyCode()) 
 					&& this.grabCooldown == 5)
 			{

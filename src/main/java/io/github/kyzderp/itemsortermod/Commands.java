@@ -43,10 +43,10 @@ public class Commands
 					"/grab clear - Clear the list of items to grab",
 					"/grab reload - Reloads .minecraft/liteconfig/config.1.7.2/ItemSorterPresets.txt",
 					"<TAB> - Grabs specified items when container opened",
-					"<F1> - Dumps all inventory + hotbar items into open container",
-					"<LSHIFT> + <F1> - Dumps all inventory items into open container",
-					"<LCTRL> + <F1> - Dumps all hotbar items into open container",
-					"<F3> - Grabs all of open container's items",
+					"<BACKWARD> - Dumps all inventory + hotbar items into open container",
+					"<LSHIFT> + <BACKWARD> - Dumps all inventory items into open container",
+					"<LCTRL> + <BACKWARD> - Dumps all hotbar items into open container",
+					"<RIGHT> - Grabs all of open container's items",
 					"<FORWARD> - Quickstacks inventory + hotbar, with metadata",
 					"<LSHIFT> + <FORWARD> - Quickstacks inventory only, with metadata",
 					"<LCTRL> + <FORWARD> - Quickstacks hotbar only, with metadata",
@@ -71,7 +71,7 @@ public class Commands
 		else if (tokens.length == 2 && tokens[1].matches("(held|meta)"))
 		{
 			if (Minecraft.getMinecraft().player.getHeldItemMainhand() == null
-					|| Minecraft.getMinecraft().player.getHeldItemMainhand().getItem() == null)
+					|| Minecraft.getMinecraft().player.getHeldItemMainhand().getUnlocalizedName().equals("tile.air"))
 			{
 				LiteModItemSorter.logError("Stahp trying to grab air");
 				return;
