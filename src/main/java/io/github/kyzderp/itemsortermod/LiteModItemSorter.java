@@ -3,6 +3,7 @@ package io.github.kyzderp.itemsortermod;
 import java.io.File;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.inventory.ContainerRepair;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
@@ -36,7 +37,7 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 	public String getName() { return "Item Sorter"; }
 
 	@Override
-	public String getVersion() { return "1.5.2"; }
+	public String getVersion() { return "1.5.3"; }
 
 	@Override
 	public void init(File configPath)
@@ -51,7 +52,8 @@ public class LiteModItemSorter implements Tickable, OutboundChatFilter
 	public void onTick(Minecraft minecraft, float partialTicks, boolean inGame, boolean clock)
 	{
 		if (inGame && minecraft.thePlayer.openContainer != null
-				&& !minecraft.thePlayer.openContainer.equals(minecraft.thePlayer.inventoryContainer))
+				&& !minecraft.thePlayer.openContainer.equals(minecraft.thePlayer.inventoryContainer)
+				&& !(minecraft.thePlayer.openContainer instanceof ContainerRepair))
 		{
 			if (this.grabCooldown < 5)
 				this.grabCooldown++;
