@@ -35,24 +35,24 @@ public class Commands
 		else if (tokens.length == 2 && tokens[1].equalsIgnoreCase("help"))
 		{
 			LiteModItemSorter.logMessage("commands (alias /itemsorter) and keys:", true);
-			String[] commands = {"/grab <item[,item2]> - Specify list of items to grab",
-					"/grab held - Grab currently held item regardless of metadata",
-					"/grab meta - Grab currently held item with specific metadata",
-					"/grab presets - Show the list of available presets",
-					"/grab <preset> - Specify preset to grab",
-					"/grab clear - Clear the list of items to grab",
-					"/grab reload - Reloads .minecraft/liteconfig/config.1.7.2/ItemSorterPresets.txt",
-					"<TAB> - Grabs specified items when container opened",
-					"<F1> - Dumps all inventory + hotbar items into open container",
-					"<LSHIFT> + <F1> - Dumps all inventory items into open container",
-					"<LCTRL> + <F1> - Dumps all hotbar items into open container",
-					"<F3> - Grabs all of open container's items",
-					"<FORWARD> - Quickstacks inventory + hotbar, with metadata",
-					"<LSHIFT> + <FORWARD> - Quickstacks inventory only, with metadata",
-					"<LCTRL> + <FORWARD> - Quickstacks hotbar only, with metadata",
-					"<LEFT> - Quickstacks inventory + hotbar, regardless of metadata",
-					"<LSHIFT> + <LEFT> - Quickstacks inventory only, regardless of metadata",
-					"<LCTRL> + <LEFT> - Quickstacks hotbar only, regardless of metadata"
+			String[] commands = {"/grab <item[,item2]> \u00A77- \u00A7fSpecify list of items to grab",
+					"/grab held \u00A77- \u00A7fGrab currently held item regardless of metadata",
+					"/grab meta \u00A77- \u00A7fGrab currently held item with specific metadata",
+					"/grab presets \u00A77- \u00A7fShow the list of available presets",
+					"/grab <preset> \u00A77- \u00A7fSpecify preset to grab",
+					"/grab clear \u00A77- \u00A7fClear the list of items to grab",
+					"/grab reload \u00A77- \u00A7fReloads .minecraft/liteconfig/common/ItemSorterPresets.txt",
+					"<TAB> \u00A77- \u00A7fGrabs specified items when container opened",
+					"<BACKWARD> \u00A77- \u00A7fDumps all inventory + hotbar items into open container",
+					"<LSHIFT> + <BACKWARD> \u00A77- \u00A7fDumps all inventory items into open container",
+					"<LCTRL> + <BACKWARD> \u00A77- \u00A7fDumps all hotbar items into open container",
+					"<RIGHT> \u00A77- \u00A7fGrabs all of open container's items",
+					"<FORWARD> \u00A77- \u00A7fQuickstacks inventory + hotbar, with metadata",
+					"<LSHIFT> + <FORWARD> \u00A77- \u00A7fQuickstacks inventory only, with metadata",
+					"<LCTRL> + <FORWARD> \u00A77- \u00A7fQuickstacks hotbar only, with metadata",
+					"<LEFT> \u00A77- \u00A7fQuickstacks inventory + hotbar, regardless of metadata",
+					"<LSHIFT> + <LEFT> \u00A77- \u00A7fQuickstacks inventory only, regardless of metadata",
+					"<LCTRL> + <LEFT> \u00A77- \u00A7fQuickstacks hotbar only, regardless of metadata"
 			};
 			for (String command: commands)
 				LiteModItemSorter.logMessage(command, false);
